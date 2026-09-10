@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Kalkulator Produktiviti HD785 - Conversi By Jarak">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <title>Kalkulator Produktiviti HD785</title>
+  <style>
+    :root {
+      --bg: #f3f6f9;
+      --card: #ffffff;
+      --text: #17202a;
+      --muted: #64748b;
+      --line: #d9e1e8;
+      --accent: #0b76c5;
+      --accent-dark: #075b98;
+      --accent-soft: #e7f2fb;
+      --button-text: #ffffff;
+      --danger: #dc2626;
+      --warning: #d69e00;
+      --success: #159447;
+      --success-soft: #e8f7ee;
+      --shadow: 0 10px 30px rgba(15, 23, 42, .08);
+    }
+    html[data-theme="dark"] {
+      --bg: #0b1117;
+      --card: #121a22;
+      --text: #f1f5f9;
+      --muted: #a8b3bf;
+      --line: #293746;
+      --accent: #39a8f4;
+      --accent-dark: #1687d0;
+      --accent-soft: #10283a;
+      --button-text: #06121d;
+      --danger: #ff6262;
+      --warning: #ffd45a;
+      --success: #45d67c;
+      --success-soft: #102c1d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+    html { color-scheme: light; scroll-behavior: smooth; }
+    html[data-theme="dark"] { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .app {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      padding: 16px 14px 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-height: 42px;
+    }
+    .theme-toggle {
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0,0,0,.04);
+      font-weight: 700;
+      font-size: .86rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: -6px;
+    }
+    .machine-photo {
+      width: 112px;
+      height: 112px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 13px;
+      border: 5px solid var(--card);
+      box-shadow: 0 8px 22px rgba(0,0,0,.16);
+      background: #e5e7eb;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: -.03em;
+    }
+    .subtitle {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .98rem;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .info-card {
+      margin-top: 18px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .formula {
+      grid-column: 1 / -1;
+      padding: 12px 13px;
+      background: var(--accent-soft);
+      border-radius: 13px;
+      color: var(--accent);
+      font-weight: 800;
+      text-align: center;
+    }
+    .vessel {
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+    .label-small {
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .vessel-value {
+      margin-top: 3px;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .form-card {
+      margin-top: 14px;
+      padding: 16px;
+    }
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .field label {
+      display: block;
+      margin: 0 0 7px;
+      font-size: .86rem;
+      font-weight: 800;
+    }
+    .field input {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      padding: 0 13px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field input::placeholder { color: #94a3b8; font-weight: 500; }
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .message {
+      display: none;
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 11px;
+      font-size: .88rem;
+      font-weight: 800;
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+    html[data-theme="dark"] .message {
+      background: #32171a;
+      border-color: #5a2429;
+    }
+    .message.show { display: block; }
+
+    .primary-btn, .reset-btn {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 13px;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+    .primary-btn {
+      margin-top: 14px;
+      background: var(--accent);
+      color: var(--button-text);
+      box-shadow: 0 8px 18px rgba(11,118,197,.22);
+    }
+    .primary-btn:active, .reset-btn:active, .theme-toggle:active { transform: translateY(1px); }
+    .primary-btn:disabled { opacity: .6; cursor: wait; }
+
+    .counting {
+      display: none;
+      margin-top: 14px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .counting.show { display: block; }
+    .count-label {
+      color: var(--muted);
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .16em;
+    }
+    .count-number {
+      margin-top: 4px;
+      font-size: clamp(2.5rem, 13vw, 4.2rem);
+      line-height: 1;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+
+    .result {
+      display: none;
+      margin-top: 14px;
+      padding: 17px;
+    }
+    .result.show { display: block; animation: reveal .25s ease-out; }
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-title {
+      margin: 0 0 13px;
+      font-size: 1.2rem;
+      letter-spacing: .08em;
+    }
+    .result-list {
+      display: grid;
+      gap: 9px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .result-row .name { color: var(--muted); font-weight: 700; }
+    .result-row .value {
+      font-size: 1.08rem;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+    .productivity {
+      border: 2px solid var(--success);
+      background: var(--success-soft);
+      padding: 15px 13px;
+    }
+    .productivity .value { font-size: clamp(1.65rem, 8vw, 2.3rem); }
+    .status-note {
+      display: none;
+      margin-top: 5px;
+      color: var(--danger);
+      font-size: .78rem;
+      font-weight: 950;
+      text-align: right;
+    }
+    .status-note.show { display: block; }
+    .status-red { color: var(--danger); border-color: var(--danger); background: transparent; }
+    .status-yellow { color: var(--warning); border-color: var(--warning); background: transparent; }
+    .status-green { color: var(--success); border-color: var(--success); background: var(--success-soft); }
+    .status-over {
+      color: var(--success);
+      border: 2px solid var(--danger);
+      background: var(--success-soft);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: .48; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .reset-btn {
+      margin-top: 14px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      z-index: 20;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      background: #111827;
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 999px;
+      font-size: .86rem;
+      font-weight: 800;
+      transition: opacity .2s, transform .2s;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+      margin-top: 24px;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="topbar">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Ubah mode tampilan">
+        <span id="themeIcon" aria-hidden="true">☾</span>
+        <span id="themeText">Dark Mode</span>
+      </button>
+    </div>
+
+    <section class="hero" aria-labelledby="appTitle">
+      <img class="machine-photo" src="hd785.jpg" alt="HD785-7 Komatsu">
+      <h1 id="appTitle">Kalkulator Produktiviti HD785</h1>
+      <p class="subtitle">Conversi By Jarak</p>
+    </section>
+
+    <section class="card info-card" aria-label="Informasi tetap">
+      <div class="formula">Rumus = Pdty ÷ Conversi</div>
+      <div class="vessel">
+        <div class="label-small">Kapasitas Vessel</div>
+        <div class="vessel-value">42 BCM</div>
+      </div>
+      <div class="vessel">
+        <div class="label-small">Unit</div>
+        <div class="vessel-value">HD785</div>
+      </div>
+    </section>
+
+    <section class="card form-card" aria-label="Input data">
+      <form id="calcForm" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="hmAwal">HM Awal</label>
+            <input id="hmAwal" name="hmAwal" type="number" inputmode="decimal" step="any" placeholder="0.0" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="hmAkhir">HM Akhir</label>
+            <input id="hmAkhir" name="hmAkhir" type="number" inputmode="decimal" step="any" placeholder="0.0" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="ritasi">Total Ritasi</label>
+            <input id="ritasi" name="ritasi" type="number" inputmode="decimal" step="any" placeholder="0.0" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="jarak">Jarak (KM)</label>
+            <input id="jarak" name="jarak" type="number" inputmode="decimal" step="0.1" placeholder="Contoh 2.5 (hanya angka tanpa KM)" autocomplete="off">
+          </div>
+        </div>
+
+        <div id="message" class="message" role="alert"></div>
+        <button id="calculateBtn" class="primary-btn" type="submit">HITUNG</button>
+      </form>
+    </section>
+
+    <section id="counting" class="card counting" aria-live="polite" aria-label="Proses counting">
+      <div class="count-label">COUNTING</div>
+      <div id="countNumber" class="count-number">0.00</div>
+    </section>
+
+    <section id="result" class="card result" aria-live="polite">
+      <h2 class="result-title">RESULT</h2>
+      <div class="result-list">
+        <div class="result-row">
+          <span class="name">Total JKP</span>
+          <span id="resultJkp" class="value">0.00</span>
+        </div>
+        <div class="result-row">
+          <span class="name">Pdty/Hr</span>
+          <span id="resultPdty" class="value">0.00</span>
+        </div>
+        <div class="result-row">
+          <span class="name">Nilai Conversi</span>
+          <span id="resultConversion" class="value">0.000</span>
+        </div>
+        <div id="productivityRow" class="result-row productivity status-green">
+          <div>
+            <div class="name">Productivity</div>
+            <div id="statusNote" class="status-note">Pdty Over</div>
+          </div>
+          <span id="resultProductivity" class="value">0.00</span>
+        </div>
+      </div>
+      <button id="resetBtn" class="reset-btn" type="button">RESET</button>
+    </section>
+
+    <footer>By NRP: 521904</footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Data berhasil dihapus</div>
+
+  <script>
+    "use strict";
+
+    const VESSEL_CAPACITY = 42;
+    
+const CONVERSION_TABLE = Object.freeze({
+  0.2: 2.16,
+  0.3: 1.83,
+  0.4: 1.60,
+  0.5: 1.48,
+  0.6: 1.34,
+  0.7: 1.23,
+  0.8: 1.14,
+  0.9: 1.06,
+  1.0: 1.00,
+  1.1: 0.95,
+  1.2: 0.90,
+  1.3: 0.86,
+  1.4: 0.82,
+  1.5: 0.79,
+  1.6: 0.76,
+  1.7: 0.73,
+  1.8: 0.71,
+  1.9: 0.69,
+  2.0: 0.67,
+  2.1: 0.65,
+  2.2: 0.63,
+  2.3: 0.62,
+  2.4: 0.60,
+  2.5: 0.59,
+  2.6: 0.58,
+  2.7: 0.57,
+  2.8: 0.56,
+  2.9: 0.55,
+  3.0: 0.54,
+  3.1: 0.53,
+  3.2: 0.52,
+  3.3: 0.51,
+  3.4: 0.50,
+  3.5: 0.50,
+  3.6: 0.49,
+  3.7: 0.48,
+  3.8: 0.48,
+  3.9: 0.47,
+  4.0: 0.46,
+  4.1: 0.45,
+  4.2: 0.45,
+  4.3: 0.44,
+  4.4: 0.43,
+  4.5: 0.43,
+  4.6: 0.42,
+  4.7: 0.41,
+  4.8: 0.41,
+  4.9: 0.40,
+  5.0: 0.39,
+  5.1: 0.375,
+  5.2: 0.369,
+  5.3: 0.364,
+  5.4: 0.358,
+  5.5: 0.353,
+  5.6: 0.348,
+  5.7: 0.343,
+  5.8: 0.338,
+  5.9: 0.333,
+  6.0: 0.328
+});
+
+
+    const form = document.getElementById("calcForm");
+    const message = document.getElementById("message");
+    const calculateBtn = document.getElementById("calculateBtn");
+    const counting = document.getElementById("counting");
+    const countNumber = document.getElementById("countNumber");
+    const result = document.getElementById("result");
+    const resultJkp = document.getElementById("resultJkp");
+    const resultPdty = document.getElementById("resultPdty");
+    const resultConversion = document.getElementById("resultConversion");
+    const resultProductivity = document.getElementById("resultProductivity");
+    const productivityRow = document.getElementById("productivityRow");
+    const statusNote = document.getElementById("statusNote");
+    const resetBtn = document.getElementById("resetBtn");
+    const toast = document.getElementById("toast");
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeText = document.getElementById("themeText");
+
+    let countTimer = null;
+    let toastTimer = null;
+
+    function formatNumber(value, digits) {
+      return Number(value).toLocaleString("id-ID", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      });
+    }
+
+    function showMessage(text) {
+      message.textContent = text;
+      message.classList.add("show");
+    }
+
+    function hideMessage() {
+      message.textContent = "";
+      message.classList.remove("show");
+    }
+
+    function normalizeDistance(value) {
+      const rounded = Math.round(value * 10) / 10;
+      // 2.50 -> 2.5 boleh; 2.05 tidak boleh dipaksa menjadi 2.1.
+      if (Math.abs(value - rounded) > 1e-9) return null;
+      return Number(rounded.toFixed(1));
+    }
+
+    function getConversion(distance) {
+      const normalized = normalizeDistance(distance);
+      if (normalized === null) return null;
+      const key = normalized.toFixed(1);
+      return Object.prototype.hasOwnProperty.call(CONVERSION_TABLE, key)
+        ? CONVERSION_TABLE[key]
+        : null;
+    }
+
+    function resetProductivityStyle() {
+      productivityRow.classList.remove("status-red", "status-yellow", "status-green", "status-over");
+      statusNote.classList.remove("show");
+    }
+
+    function applyProductivityStatus(value) {
+      resetProductivityStyle();
+
+      if (value <= 200) {
+        productivityRow.classList.add("status-red");
+      } else if (value <= 230) {
+        productivityRow.classList.add("status-yellow");
+      } else if (value < 300) {
+        productivityRow.classList.add("status-green");
+      } else {
+        productivityRow.classList.add("status-over");
+        statusNote.classList.add("show");
+      }
+    }
+
+    function animateCounting(finalValue, onComplete) {
+      if (countTimer) clearInterval(countTimer);
+
+      counting.classList.add("show");
+      result.classList.remove("show");
+      countNumber.textContent = "0.00";
+
+      const duration = 1050;
+      const start = performance.now();
+
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        // Ease-out: terlihat cepat di awal lalu mendekati hasil akhir.
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = finalValue * eased;
+        countNumber.textContent = formatNumber(current, 2);
+
+        if (progress < 1) {
+          countTimer = requestAnimationFrame(frame);
+        } else {
+          countTimer = null;
+          countNumber.textContent = formatNumber(finalValue, 2);
+          setTimeout(onComplete, 180);
+        }
+      }
+
+      countTimer = requestAnimationFrame(frame);
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      hideMessage();
+
+      const raw = {
+        hmAwal: document.getElementById("hmAwal").value.trim(),
+        hmAkhir: document.getElementById("hmAkhir").value.trim(),
+        ritasi: document.getElementById("ritasi").value.trim(),
+        jarak: document.getElementById("jarak").value.trim()
+      };
+
+      if (!raw.hmAwal || !raw.hmAkhir || !raw.ritasi || !raw.jarak) {
+        showMessage("Harap lengkapi kolom yang belum terisi");
+        return;
+      }
+
+      const hmAwal = Number(raw.hmAwal);
+      const hmAkhir = Number(raw.hmAkhir);
+      const ritasi = Number(raw.ritasi);
+      const jarak = Number(raw.jarak);
+
+      if (![hmAwal, hmAkhir, ritasi, jarak].every(Number.isFinite)) {
+        showMessage("Harap masukkan angka yang valid");
+        return;
+      }
+
+      if (hmAkhir <= hmAwal) {
+        showMessage("HM Akhir harus lebih besar dari HM Awal");
+        return;
+      }
+
+      const conversion = getConversion(jarak);
+      if (conversion === null) {
+        showMessage("Jarak tidak tersedia");
+        return;
+      }
+
+      const totalJkp = hmAkhir - hmAwal;
+      const pdtyHr = (ritasi * VESSEL_CAPACITY) / totalJkp;
+      const productivity = pdtyHr / conversion;
+
+      calculateBtn.disabled = true;
+
+      animateCounting(productivity, function() {
+        resultJkp.textContent = formatNumber(totalJkp, 2);
+        resultPdty.textContent = formatNumber(pdtyHr, 2);
+        resultConversion.textContent = formatNumber(conversion, 3);
+        resultProductivity.textContent = formatNumber(productivity, 2);
+        applyProductivityStatus(productivity);
+
+        counting.classList.remove("show");
+        result.classList.add("show");
+        calculateBtn.disabled = false;
+        result.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    resetBtn.addEventListener("click", function() {
+      if (countTimer) {
+        cancelAnimationFrame(countTimer);
+        countTimer = null;
+      }
+
+      form.reset();
+      hideMessage();
+      counting.classList.remove("show");
+      countNumber.textContent = "0.00";
+      result.classList.remove("show");
+      resultJkp.textContent = "0.00";
+      resultPdty.textContent = "0.00";
+      resultConversion.textContent = "0.000";
+      resultProductivity.textContent = "0.00";
+      resetProductivityStyle();
+      calculateBtn.disabled = false;
+
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() {
+        toast.classList.remove("show");
+      }, 1800);
+    });
+
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      const dark = theme === "dark";
+      themeIcon.textContent = dark ? "☀" : "☾";
+      themeText.textContent = dark ? "Light Mode" : "Dark Mode";
+      themeToggle.setAttribute("aria-label", dark ? "Gunakan Light Mode" : "Gunakan Dark Mode");
+      try {
+        localStorage.setItem("hd785-theme", theme);
+      } catch (_) {}
+    }
+
+    (function initTheme() {
+      let saved = null;
+      try { saved = localStorage.getItem("hd785-theme"); } catch (_) {}
+      if (saved === "dark" || saved === "light") {
+        applyTheme(saved);
+      } else {
+        applyTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      }
+    })();
+
+    themeToggle.addEventListener("click", function() {
+      const current = document.documentElement.dataset.theme;
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+
+    // PWA: service worker aktif saat dibuka melalui HTTPS/localhost.
+    // Membuka index.html langsung tetap menjalankan kalkulator; browser biasanya
+    // tidak mengizinkan service worker pada file://.
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      window.addEventListener("load", function() {
+        navigator.serviceWorker.register("service-worker.js").catch(function() {});
+      });
+    }
+  </script>
+</body>
+</html>
