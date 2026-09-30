@@ -338,6 +338,23 @@
       opacity: 1;
       transform: translate(-50%, 0);
     }
+
+    .note {
+      margin-top: 18px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: .72rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .note strong {
+      color: var(--text);
+    }
+
     footer {
       text-align: center;
       color: var(--muted);
@@ -431,6 +448,14 @@
       </div>
       <button id="resetBtn" class="reset-btn" type="button">RESET</button>
     </section>
+
+    <div class="note">
+      Hasil kalkulator hanya sebagai referensi monitoring, bukan nilai produktivitas fix.
+      Selisih hasil dapat dipengaruhi berbagai faktor, seperti jarak yang belum final dari Engineering,
+      kondisi/data lapangan, dan ketidaksesuaian input MOCO.
+      <br><br>
+      <strong>Pastikan ritasi dicatat pada timesheet agar tidak terjadi lost produksi.</strong>
+    </div>
 
     <footer>By NRP: 52190004</footer>
   </main>
@@ -551,14 +576,14 @@ const CONVERSION_TABLE = Object.freeze({
     }
 
     function getConversion(distance) {
-  const normalized = normalizeDistance(distance);
+      const normalized = normalizeDistance(distance);
 
-  if (normalized === null) return null;
+      if (normalized === null) return null;
 
-  return Object.prototype.hasOwnProperty.call(CONVERSION_TABLE, normalized)
-    ? CONVERSION_TABLE[normalized]
-    : null;
-}
+      return Object.prototype.hasOwnProperty.call(CONVERSION_TABLE, normalized)
+        ? CONVERSION_TABLE[normalized]
+        : null;
+    }
 
     function resetProductivityStyle() {
       productivityRow.classList.remove("status-red", "status-yellow", "status-green", "status-over");
@@ -727,4 +752,4 @@ const CONVERSION_TABLE = Object.freeze({
     }
   </script>
 </body>
-  </html>
+      </html>
