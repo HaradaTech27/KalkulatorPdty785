@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#111827">
-  <meta name="description" content="Kalkulator Produktiviti HD785 - Conversi By Jarak">
+  <meta name="description" content="Kalkulator Productivity HD785 - Conversi By Jarak">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png" type="image/png">
-  <title>Kalkulator Produktiviti HD785</title>
+  <title>Kalkulator Productivity HD785</title>
   <style>
     :root {
       --bg: #f3f6f9;
@@ -359,7 +359,7 @@
 
     <section class="hero" aria-labelledby="appTitle">
       <img class="machine-photo" src="hd785.jpg" alt="HD785-7 Komatsu">
-      <h1 id="appTitle">Kalkulator Produktiviti HD785</h1>
+      <h1 id="appTitle">Kalkulator Productivity HD785</h1>
       <p class="subtitle">Conversi By Jarak</p>
     </section>
 
@@ -432,7 +432,7 @@
       <button id="resetBtn" class="reset-btn" type="button">RESET</button>
     </section>
 
-    <footer>By NRP: 521904</footer>
+    <footer>By NRP: 52190004</footer>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite">Data berhasil dihapus</div>
@@ -551,13 +551,14 @@ const CONVERSION_TABLE = Object.freeze({
     }
 
     function getConversion(distance) {
-      const normalized = normalizeDistance(distance);
-      if (normalized === null) return null;
-      const key = normalized.toFixed(1);
-      return Object.prototype.hasOwnProperty.call(CONVERSION_TABLE, key)
-        ? CONVERSION_TABLE[key]
-        : null;
-    }
+  const normalized = normalizeDistance(distance);
+
+  if (normalized === null) return null;
+
+  return Object.prototype.hasOwnProperty.call(CONVERSION_TABLE, normalized)
+    ? CONVERSION_TABLE[normalized]
+    : null;
+}
 
     function resetProductivityStyle() {
       productivityRow.classList.remove("status-red", "status-yellow", "status-green", "status-over");
@@ -726,4 +727,4 @@ const CONVERSION_TABLE = Object.freeze({
     }
   </script>
 </body>
-</html>
+  </html>
